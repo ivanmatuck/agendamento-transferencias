@@ -1,347 +1,356 @@
-# Documentação do Projeto: Sistema de Agendamento de Transferências
+# Documentação do Projeto: Sistema de Agendamento de Transferências Financeiras
 
 ## Visão Geral
 
-### Objetivo do Projeto
-O projeto "Agendamento de Transferências" é uma aplicação desenvolvida para gerenciar transferências financeiras agendadas. O sistema permite que os usuários agendem transferências entre contas bancárias, calculando automaticamente as taxas de acordo com a data da transferência. Este sistema visa simplificar o processo de agendamento, garantindo precisão e segurança nas transações financeiras.
+O projeto "Sistema de Agendamento de Transferências Financeiras" é uma aplicação desenvolvida em Java utilizando o framework Spring Boot. O objetivo principal deste sistema é permitir o agendamento de transferências financeiras entre contas, oferecendo uma interface RESTful para que os usuários possam agendar, listar e buscar transferências por data.
 
-### Benefícios para o Negócio
-- **Automação do Agendamento:** Facilita o agendamento de transferências, reduzindo o trabalho manual e minimizando erros humanos.
-- **Cálculo Dinâmico de Taxas:** Oferece flexibilidade na aplicação de taxas, permitindo que o sistema calcule com base em regras de negócios predefinidas.
-- **Centralização de Dados:** Armazena todas as informações em uma base de dados central, permitindo fácil acesso e gerenciamento das transferências.
+## Objetivo do Projeto
 
-## Estrutura e Organização do Projeto
+O sistema foi projetado para automatizar o processo de agendamento de transferências financeiras, proporcionando uma maneira eficiente e segura de gerenciar transações entre contas. A aplicação é capaz de calcular automaticamente as taxas de transferência com base na diferença de dias entre a data de agendamento e a data da transferência.
 
-O projeto está organizado da seguinte forma:
+## Benefícios para o Negócio
 
-- **Pasta Principal:** `agendamento-transferencias`
-  - **`src/main/java/com/empresa/transferencias`**
-    - **Main Application:** `AgendamentoTransferenciasApplication.java`
-    - **Controller:** `TransferenciaController.java`
-    - **Service:** `TransferenciaService.java`
-    - **Model:** `Transferencia.java`
-    - **Repository:** `TransferenciaRepository.java`
-    - **Exception Handling:** `GlobalExceptionHandler.java`
-  - **`src/main/resources`**
-    - **Configuration:** `application.properties`
-  - **`src/test/java/com/empresa/transferencias/agendamento_transferencias`**
-    - **Testes:** `AgendamentoTransferenciasApplicationTests.java`
+1. **Automação de Processos**: Reduz a necessidade de intervenção manual, diminuindo erros e aumentando a eficiência operacional.
+2. **Flexibilidade**: Permite aos usuários agendar transferências para datas futuras, facilitando o planejamento financeiro.
+3. **Cálculo Automático de Taxas**: As taxas de transferência são calculadas automaticamente, garantindo precisão e conformidade com as políticas de cobrança.
+4. **Segurança e Confiabilidade**: Utiliza validações rigorosas e tratamento de exceções para garantir a integridade dos dados e a segurança das operações.
+5. **Escalabilidade**: Construído sobre o Spring Boot, o sistema pode ser facilmente escalado para atender a um número crescente de usuários e transações.
 
-## Componentes Principais
+## Estrutura do Projeto
 
-### 1. **`AgendamentoTransferenciasApplication`**
-- Classe principal que inicializa o aplicativo Spring Boot.
-- Entry point do sistema.
+### Configuração do Projeto
 
-### 2. **`TransferenciaController`**
-- Controlador REST responsável pela interface HTTP, gerenciando endpoints para agendar e listar transferências.
-- Endpoints principais:
-  - `POST /api/transferencias`: Agendar uma nova transferência.
-  - `GET /api/transferencias`: Listar todas as transferências.
-  - `GET /api/transferencias/data?data={data}`: Buscar transferências por data.
+- **Maven**: O projeto utiliza o Maven para gerenciamento de dependências e construção. As principais dependências incluem Spring Boot, Spring Data JPA, H2 Database, e Lombok.
+- **Java 11**: A aplicação é desenvolvida usando a versão 11 do Java.
 
-### 3. **`TransferenciaService`**
-- Contém a lógica de negócios para o agendamento de transferências.
-- Métodos principais:
-  - `agendarTransferencia(Transferencia transferencia)`: Agenda uma nova transferência e calcula a taxa correspondente.
-  - `listarTransferencias()`: Retorna todas as transferências.
-  - `buscarPorDataTransferencia(LocalDate data)`: Busca transferências pela data especificada.
+### Componentes Principais
 
-### 4. **`TransferenciaRepository`**
-- Interface que extende `JpaRepository` para interagir com a base de dados.
-- Métodos principais:
-  - `findByDataTransferencia(LocalDate dataTransferencia)`: Busca transferências por data.
+1. **AgendamentoTransferenciasApplication**: Classe principal que inicializa a aplicação Spring Boot.
 
-### 5. **`Transferencia` (Modelo)**
-- Entidade que representa uma transferência financeira.
-- Atributos principais: `id`, `contaOrigem`, `contaDestino`, `valorTransferencia`, `taxa`, `dataTransferencia`, `dataAgendamento`.
+2. **Configurações de CORS**:
+    - `CorsConfig` e `CorsFilter` configuram o CORS para permitir requisições de origens específicas, essencial para o ambiente de desenvolvimento.
 
-### 6. **`GlobalExceptionHandler`**
-- Classe de tratamento global de exceções, capturando erros comuns e retornando mensagens amigáveis ao usuário.
+3. **Controladores REST**:
+    - `TransferenciaController`: Exponibiliza endpoints para agendar, listar e buscar transferências por data.
 
-## Dependências e Configurações
+4. **Modelo de Dados**:
+    - `Transferencia`: Entidade JPA que representa uma transferência financeira, com atributos validados para garantir consistência.
 
-### Dependências Principais
-- **Spring Boot**: Framework principal para criar aplicações Java.
-- **Spring Data JPA**: Para persistência e acesso a dados.
-- **H2 Database**: Banco de dados em memória para teste e desenvolvimento.
-- **Lombok**: Simplificação do código através da geração automática de getters, setters, e outras funções.
-- **Spring Validation**: Para validação de dados dos modelos.
+5. **Repositório**:
+    - `TransferenciaRepository`: Interface que estende `JpaRepository` para interagir com o banco de dados.
 
-### Arquivo `application.properties`
-Contém configurações do banco de dados H2, porta da aplicação e outras propriedades do Spring Boot. *As credenciais e detalhes de segurança foram omitidos.*
+6. **Serviço**:
+    - `TransferenciaService`: Contém a lógica de negócios para agendamento e listagem de transferências, incluindo o cálculo de taxas.
 
-## Guia de Início Rápido
+7. **Tratamento de Exceções**:
+    - `GlobalExceptionHandler`: Captura e trata exceções de validação e erros inesperados, retornando mensagens amigáveis ao cliente.
 
-1. **Configurar o Ambiente**
-   - Certifique-se de ter o Maven e Java (versão 11) instalados.
+### Configurações de Ambiente
 
-2. **Clonar o Repositório**
-   - Clone o repositório em sua máquina local.
+- **Banco de Dados H2**: Utilizado em modo memória para facilitar o desenvolvimento e testes.
+- **Perfis de Aplicação**: Configurações específicas para o ambiente de desenvolvimento são definidas em `application-dev.properties`.
 
-3. **Construção do Projeto**
-   - Navegue até a raiz do projeto e execute o comando `mvn clean install` para compilar o projeto e resolver dependências.
+### Testes
 
-4. **Iniciar a Aplicação**
-   - Execute `mvn spring-boot:run` para iniciar o servidor na porta configurada (padrão 8080).
+- **Testes de Unidade**: Testes para `TransferenciaController` e `TransferenciaService` garantem que a lógica de negócios e os endpoints funcionem conforme o esperado.
 
-5. **Interagir via API**
-   - Utilize ferramentas como Postman ou Insomnia para testar os endpoints fornecidos pelo `TransferenciaController`. 
+## Conclusão
 
+O "Sistema de Agendamento de Transferências Financeiras" oferece uma solução robusta e escalável para o gerenciamento de transferências financeiras, com foco em automação, segurança e eficiência.
 
-## Detalhamento da Arquitetura
+## Arquitetura
 
-Para construir uma visão clara e detalhada da arquitetura do sistema descrito, vamos organizar e explicar cada componente e sua função no sistema.
+Sistema de Agendamento de Transferências - Java
 
 ```
-+----------------------------------------------------+
-| Controllers                                        |
-|----------------------------------------------------|
-| - Recebem as requisições HTTP.                     |
-| - Validam os dados recebidos das requisições.      |
-| - Chamam os services e passam os dados processados.|
-| - Formatam e enviam as respostas para o cliente.   |
-+----------------------------------------------------+
-                |
-                V
-+----------------------------------------------------+
-| Services                                           |
-|----------------------------------------------------|
-| - Implementam a lógica de negócio.                 |
-| - Servem como intermediários entre controllers     |
-|   e models.                                        |
-| - Não têm acesso direto ao banco de dados.         |
-| - Realizam chamadas aos métodos dos models para    |
-|   manipulação de dados.                            |
-+----------------------------------------------------+
-                |
-                V
-+----------------------------------------------------+
-| Models                                             |
-|----------------------------------------------------|
-| - Representam as tabelas do banco de dados.        |
-| - Definem os métodos para interagir com os dados,  |
-|   como salvar, buscar, atualizar e deletar registros|
-|   específicos.                                     |
-| - Delegam o acesso direto ao banco para o          |
-|   repository.                                      |
-+----------------------------------------------------+
-                |
-                V
-+----------------------------------------------------+
-| Repository                                         |
-|----------------------------------------------------|
-| - Responsável pelo acesso direto ao banco de dados.|
-| - Contém todos os métodos de manipulação de dados, |
-|   como queries puras, operações CRUD (Create, Read,|
-|   Update, Delete), etc.                            |
-| - Usado exclusivamente pelos models, permitindo    |
-|   que eles realizem operações sem conhecer         |
-|   diretamente a lógica do banco de dados.          |
-+----------------------------------------------------+
+Sistema de Agendamento de Transferências - Java
+├── Camada de Aplicação
+│   ├── AgendamentoTransferenciasApplication.java
+├── Camada de Configuração
+│   ├── CorsConfig.java
+│   └── CorsFilter.java
+├── Camada de Controle
+│   └── TransferenciaController.java
+├── Camada de Exceção
+│   └── GlobalExceptionHandler.java
+├── Camada de Modelo
+│   └── Transferencia.java
+├── Camada de Repositório
+│   └── TransferenciaRepository.java
+├── Camada de Serviço
+│   └── TransferenciaService.java
+├── Camada de Recursos
+│   ├── application-dev.properties
+│   └── application.properties
+└── Camada de Testes
+    ├── AgendamentoTransferenciasApplicationTests.java
+    ├── TransferenciaControllerTest.java
+    └── TransferenciaServiceTest.java
 ```
 
-### Detalhamento de cada camada:
+**Camada de Aplicação:**
+- `AgendamentoTransferenciasApplication.java`: Classe principal que inicia a aplicação Spring Boot.
 
-- **Controllers**:
-  - A camada de Controllers é responsável por gerenciar as requisições e respostas do sistema. Seu papel é garantir que os dados de entrada sejam válidos e possam ser processados de forma segura. Os controllers recebem os dados das requisições HTTP, validam esses dados, e então invocam os métodos de serviços. Após a realização das operações desejadas, eles também formatam a resposta antes de enviá-la de volta ao cliente.
+**Camada de Configuração:**
+- `CorsConfig.java`: Configurações de CORS para permitir requisições de origens específicas durante o desenvolvimento.
+- `CorsFilter.java`: Filtro para gerenciar requisições CORS, permitindo ou bloqueando acessos baseados na origem.
 
-- **Services**:
-  - Os Services são a camada onde reside a lógica de negócio. Eles coordenam a interação entre controllers e models, encapsulando a regra de negócio que não pertence aos controllers ou ao models diretamente. Essa camada não interage diretamente com o banco de dados, mas faz chamadas aos models para operações de manipulação de dados.
+**Camada de Controle:**
+- `TransferenciaController.java`: Controlador REST que expõe endpoints para agendar e listar transferências financeiras.
 
-- **Models**:
-  - A camada de Models é focada na representação das tabelas do banco de dados e na definição de métodos para interação com essas tabelas. Cada model representa uma tabela e define métodos que permitem salvar, buscar, atualizar e excluir registros. Os models são desenhados para não dependerem diretamente da estrutura do banco de dados; eles usam os repositories para isso.
+**Camada de Exceção:**
+- `GlobalExceptionHandler.java`: Trata exceções globais, fornecendo respostas amigáveis para erros de validação e exceções inesperadas.
 
-- **Repository**:
-  - O Repository é a camada responsável pelo acesso direto ao banco de dados. É aqui que são definidas as queries puras e as operações CRUD (Create, Read, Update, Delete) necessárias para a manipulação de dados. Os repositories são usados exclusivamente pelos models, permitindo uma separação clara entre a lógica de aplicação e o acesso aos dados. 
+**Camada de Modelo:**
+- `Transferencia.java`: Entidade que representa uma transferência financeira, com validações para garantir a consistência dos dados.
 
-## Detalhamento do Fluxo de Endpoints
+**Camada de Repositório:**
+- `TransferenciaRepository.java`: Interface que fornece métodos para interagir com o banco de dados, utilizando Spring Data JPA.
 
-Vamos detalhar o fluxo de cada endpoint exposto no `TransferenciaController` do projeto Java fornecido. Este projeto é um sistema de agendamento de transferências financeiras.
+**Camada de Serviço:**
+- `TransferenciaService.java`: Contém a lógica de negócios para agendamento de transferências, incluindo validações e cálculo de taxas.
 
-### 1. Endpoint `POST /api/transferencias` - Agendar Transferência
+**Camada de Recursos:**
+- `application-dev.properties`: Configurações específicas para o ambiente de desenvolvimento, incluindo CORS e logs.
+- `application.properties`: Configurações gerais da aplicação, como perfil ativo e configurações do banco de dados H2.
 
-**Entrada:**
-- Recebe um JSON representando uma `Transferencia` no corpo da requisição.
-- Campos obrigatórios:
-  - `contaOrigem`: código de 6 caracteres da conta de origem.
-  - `contaDestino`: código de 6 caracteres da conta de destino.
-  - `valorTransferencia`: valor a ser transferido (deve ser maior que zero).
-  - `dataTransferencia`: data futura para a transferência.
-
-**Processamento Interno:**
-- O controlador valida os dados recebidos (`@Valid`).
-- Chama o método `agendarTransferencia` do `TransferenciaService`.
-  - **Validação:** Verifica se a conta de origem é igual à de destino e se o valor é positivo.
-  - **Cálculo de Taxa:** Calcula a taxa com base na diferença de dias entre a data de agendamento e a data de transferência.
-  - **Persistência:** Salva a transferência no banco de dados usando `TransferenciaRepository`.
-
-**Saída:**
-- Em caso de sucesso, retorna `200 OK` com um mapa contendo uma mensagem de sucesso e a transferência agendada com a taxa calculada.
-- Em caso de falha de validação, retorna `400 Bad Request` com detalhes do erro.
-- Em caso de erro interno, retorna `500 Internal Server Error` com uma mensagem genérica de erro.
-
-### 2. Endpoint `GET /api/transferencias` - Listar Transferências
-
-**Entrada:**
-- Não requer parâmetros.
-
-**Processamento Interno:**
-- Chama o método `listarTransferencias` do `TransferenciaService`, que recupera todas as transferências do banco de dados.
-
-**Saída:**
-- Em caso de sucesso, retorna `200 OK` com um mapa contendo a quantidade de transferências e a lista completa de transferências.
-- Em caso de erro, retorna `500 Internal Server Error` com uma mensagem de erro.
-
-### 3. Endpoint `GET /api/transferencias/data` - Buscar Transferências por Data
-
-**Entrada:**
-- Requer o parâmetro `data` na query string, no formato `yyyy-MM-dd`.
-
-**Processamento Interno:**
-- Converte o parâmetro de string para `LocalDate`.
-- Chama o método `buscarPorDataTransferencia` do `TransferenciaService`, que recupera transferências agendadas para a data especificada.
-
-**Saída:**
-- Em caso de sucesso, retorna `200 OK` com a lista de transferências para a data especificada.
-- Em caso de erro de formatação de data ou outro erro, retorna `400 Bad Request`.
-
-### Tratamento de Exceções
-
-A classe `GlobalExceptionHandler` gerencia exceções globais, fornecendo mensagens apropriadas:
-- Captura e trata exceções de validação (`MethodArgumentNotValidException`).
-  - Retorna `400 Bad Request` com detalhes dos campos inválidos.
-- Captura exceções genéricas (`Exception`).
-  - Retorna `500 Internal Server Error` com uma mensagem padrão.
-
-### Modelagem de Dados
-
-A entidade `Transferencia` é usada para mapear as informações de transferência persistidas no banco de dados H2. Possui validações de atributos com anotações de `javax.validation` para garantir a integridade dos dados.
-
-### Configuração do Sistema
-
-No arquivo `application.properties`, está configurado o uso do banco de dados H2 em memória e a porta do servidor é definida como `8080`.
-
-Este é um resumo do fluxo dos endpoints e a estrutura principal do sistema. Se precisar de mais detalhes em alguma parte específica, sinta-se à vontade para perguntar!
-
-## Detalhamento dos Models e Banco de Dados
+**Camada de Testes:**
+- `AgendamentoTransferenciasApplicationTests.java`: Testes de contexto da aplicação.
+- `TransferenciaControllerTest.java`: Testes unitários para o controlador de transferências.
+- `TransferenciaServiceTest.java`: Testes unitários para o serviço de transferências.
 
 
-### Estrutura de Dados e Relacionamentos
+## Endpoints
 
-#### Tabela `transferencias`
+### Detalhamento dos Endpoints
 
-A tabela `transferencias` armazena informações sobre cada transferência financeira agendada. Não há menção de outras tabelas ou relacionamentos entre tabelas neste projeto, o que sugere que a tabela `transferencias` é independente.
+#### Endpoint: Agendar Transferência
 
-**Colunas:**
-- **id**: (UUID) Identificador único gerado automaticamente para cada transferência.
-- **conta_origem**: (String) Conta bancária de origem. Deve ter exatamente 6 caracteres.
-- **conta_destino**: (String) Conta bancária de destino. Deve ter exatamente 6 caracteres.
-- **valor_transferencia**: (BigDecimal) Valor da transferência. Deve ser maior que 0.
-- **taxa**: (BigDecimal) Taxa calculada para a transferência.
-- **data_transferencia**: (LocalDate) Data futura para a qual a transferência está agendada.
-- **data_agendamento**: (LocalDate) Data em que a transferência foi agendada (normalmente, a data atual).
+- **Método HTTP**: `POST`
+- **URL**: `/api/transferencias`
 
-### Tipo de Servidor de Banco de Dados Utilizado
+##### Entradas:
+- **Corpo da Requisição**: Um objeto JSON representando uma transferência, com os seguintes campos obrigatórios:
+    - `contaOrigem`: String de 6 caracteres representando a conta de origem.
+    - `contaDestino`: String de 6 caracteres representando a conta de destino.
+    - `valorTransferencia`: Valor decimal maior que 0 representando o valor a ser transferido.
+    - `dataTransferencia`: Data futura no formato ISO-8601 (yyyy-MM-dd) representando a data da transferência.
 
-O projeto utiliza o banco de dados **H2** no modo em memória, conforme configurado no arquivo `application.properties`.
+##### Processamento Interno e Validações:
+1. **Validações de Entrada**:
+    - Verifica se `contaOrigem` e `contaDestino` possuem exatamente 6 caracteres.
+    - Verifica se `valorTransferencia` é maior que 0.
+    - Verifica se `dataTransferencia` é uma data futura.
+    - Verifica se `contaOrigem` e `contaDestino` são diferentes.
 
-**Configurações do Banco de Dados:**
-- URL: `jdbc:h2:mem:agendamentos`
-- Driver: `org.h2.Driver`
-- Username: `sa`
-- Password: `password`
+2. **Cálculo da Taxa**:
+    - Calcula a diferença em dias entre a data de agendamento (data atual) e `dataTransferencia`.
+    - Calcula a taxa com base na diferença de dias:
+        - 0 dias: 2.5% do valor + R$3,00.
+        - 1-10 dias: R$12,00.
+        - 11-20 dias: 8.2% do valor.
+        - 21-30 dias: 6.9% do valor.
+        - 31-40 dias: 4.7% do valor.
+        - 41-50 dias: 1.7% do valor.
+        - Mais de 50 dias: Não permitido.
 
-### Forma de Conexão com o Banco de Dados
+3. **Persistência**:
+    - Salva a transferência no banco de dados com a taxa calculada e a data de agendamento.
 
-O projeto utiliza o Spring Boot e o Spring Data JPA para gerenciar a conexão com o banco de dados. A conexão é configurada através das propriedades no arquivo `application.properties`. O Hibernate é utilizado para o mapeamento objeto-relacional (ORM).
+##### Saídas:
+- **Resposta de Sucesso** (`200 OK`):
+    - Corpo: JSON contendo uma mensagem de sucesso e os dados da transferência agendada.
+- **Erros de Validação** (`400 Bad Request`):
+    - Corpo: JSON detalhando os erros de validação.
+- **Erro Interno** (`500 Internal Server Error`):
+    - Corpo: JSON com mensagem de erro genérica.
 
-### Classes Correspondentes aos Models e Suas Propriedades
+#### Endpoint: Listar Transferências
 
-#### Classe `Transferencia`
+- **Método HTTP**: `GET`
+- **URL**: `/api/transferencias`
 
-Pacote: `com.empresa.transferencias.model`
+##### Entradas:
+- Nenhuma entrada específica.
 
-**Atributos:**
-- `UUID id`: Identificador único da transferência.
-- `String contaOrigem`: Conta de origem da transferência.
-- `String contaDestino`: Conta de destino da transferência.
-- `BigDecimal valorTransferencia`: Valor a ser transferido.
-- `BigDecimal taxa`: Taxa calculada para a transferência.
-- `LocalDate dataTransferencia`: Data em que a transferência deverá ocorrer.
-- `LocalDate dataAgendamento`: Data em que o agendamento foi feito.
+##### Processamento Interno:
+1. **Consulta ao Banco de Dados**:
+    - Recupera todas as transferências cadastradas.
 
-**Anotações Específicas:**
-- `@Entity`: Marca a classe como uma entidade JPA.
-- `@Table(name = "transferencias")`: Especifica o nome da tabela.
-- `@Id`, `@GeneratedValue(strategy = GenerationType.AUTO)`: Indica o campo `id` como chave primária com geração automática.
-- Anotações de validação como `@NotNull`, `@Size`, `@DecimalMin`, `@Future` que asseguram a integridade dos dados conforme regras de negócio especificadas.
+##### Saídas:
+- **Resposta de Sucesso** (`200 OK`):
+    - Corpo: JSON contendo a quantidade e a lista de todas as transferências.
+- **Erro Interno** (`500 Internal Server Error`):
+    - Corpo: JSON com mensagem de erro genérica.
 
+#### Endpoint: Buscar Transferências por Data
 
-## Configuração do Projeto e Testes Locais
+- **Método HTTP**: `GET`
+- **URL**: `/api/transferencias/data`
 
-Para configurar e executar o projeto `agendamento-transferencias` localmente, siga as instruções detalhadas abaixo:
+##### Entradas:
+- **Parâmetro de Consulta**: `data` (String no formato ISO-8601 yyyy-MM-dd).
+
+##### Processamento Interno:
+1. **Conversão de Data**:
+    - Converte o parâmetro `data` para um objeto `LocalDate`.
+
+2. **Consulta ao Banco de Dados**:
+    - Busca transferências agendadas para a data especificada.
+
+##### Saídas:
+- **Resposta de Sucesso** (`200 OK`):
+    - Corpo: JSON contendo a lista de transferências para a data especificada.
+- **Erro de Validação** (`400 Bad Request`):
+    - Corpo: JSON detalhando erros de entrada inválida.
+- **Erro Interno** (`500 Internal Server Error`):
+    - Corpo: JSON com mensagem de erro genérica.
+
+## Models
+
+### Models
+
+#### Transferencia
+
+A tabela `transferencias` é representada pela classe `Transferencia`. A estrutura da tabela e suas colunas são definidas da seguinte forma:
+
+- **id**: Identificador único para cada transferência, do tipo `UUID`. É a chave primária da tabela.
+- **conta_origem**: Representa a conta de origem da transferência. É uma string de exatamente 6 caracteres, não nula.
+- **conta_destino**: Representa a conta de destino da transferência. É uma string de exatamente 6 caracteres, não nula.
+- **valor_transferencia**: Valor da transferência, do tipo `BigDecimal`. Deve ser maior que 0 e não pode ser nulo.
+- **taxa**: Taxa aplicada à transferência, do tipo `BigDecimal`. Não pode ser nula.
+- **data_transferencia**: Data em que a transferência está agendada para ocorrer, do tipo `LocalDate`. Deve ser uma data futura e não pode ser nula.
+- **data_agendamento**: Data em que a transferência foi agendada, do tipo `LocalDate`. Não pode ser nula.
+
+#### Relacionamentos
+
+Atualmente, a tabela `transferencias` não possui relacionamentos explícitos com outras tabelas. A classe `Transferencia` é uma entidade independente no contexto do sistema de agendamento de transferências financeiras.
+
+## Configurações
 
 ### Configurações do Projeto
 
 #### Packages Utilizados
 
-O projeto está organizado nas seguintes packages principais:
+O projeto está estruturado em vários pacotes, cada um com uma responsabilidade específica:
 
-- `com.empresa.transferencias`: Package raiz do projeto.
-- `com.empresa.transferencias.controller`: Contém os controladores REST que expõem os endpoints do sistema.
-- `com.empresa.transferencias.exception`: Gerencia exceções de forma centralizada.
-- `com.empresa.transferencias.model`: Inclui as classes de modelo representando as entidades do sistema.
-- `com.empresa.transferencias.repository`: Interage com o banco de dados através dos repositórios JPA.
-- `com.empresa.transferencias.service`: Contém a lógica de negócios para o agendamento e processamento de transferências.
+- **com.empresa.transferencias**: Contém a classe principal `AgendamentoTransferenciasApplication` que inicia a aplicação.
+- **com.empresa.transferencias.config**: Inclui classes de configuração, como `CorsConfig` e `CorsFilter`, para gerenciar configurações de CORS.
+- **com.empresa.transferencias.controller**: Contém controladores REST, como `TransferenciaController`, que expõem endpoints para operações de transferência.
+- **com.empresa.transferencias.exception**: Inclui a classe `GlobalExceptionHandler` para tratamento global de exceções.
+- **com.empresa.transferencias.model**: Define as entidades do modelo de dados, como `Transferencia`.
+- **com.empresa.transferencias.repository**: Contém interfaces de repositório, como `TransferenciaRepository`, para interação com o banco de dados.
+- **com.empresa.transferencias.service**: Inclui serviços, como `TransferenciaService`, que implementam a lógica de negócios.
 
 #### Dependências Específicas
 
-O projeto utiliza as seguintes dependências, configuradas no arquivo `pom.xml`:
+O projeto utiliza várias dependências gerenciadas pelo Maven, especificadas no arquivo `pom.xml`:
 
-- **Spring Boot Starter Web**: Para criar aplicativos web RESTful.
-- **Spring Boot Starter Data JPA**: Para a integração com o JPA e gerenciamento de persistência.
-- **H2 Database**: Banco de dados em memória usado no ambiente de desenvolvimento.
-- **Lombok**: Para reduzir o código boilerplate nas classes de modelo.
-- **Spring Boot Starter Validation**: Para validação das entradas no projeto.
-- **Spring Boot Starter Test**: Para suporte a testes de unidade e integração.
+- **Spring Boot Starter Web**: Para criar aplicações web RESTful.
+  ```xml
+  <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-web</artifactId>
+  </dependency>
+  ```
 
-#### Instruções detalhadas para Configurar o Ambiente Local
+- **Spring Data JPA**: Para persistência de dados usando JPA.
+  ```xml
+  <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-data-jpa</artifactId>
+  </dependency>
+  ```
+
+- **H2 Database**: Banco de dados em memória para desenvolvimento e testes.
+  ```xml
+  <dependency>
+      <groupId>com.h2database</groupId>
+      <artifactId>h2</artifactId>
+      <scope>runtime</scope>
+  </dependency>
+  ```
+
+- **Lombok**: Para reduzir o código boilerplate, como getters e setters.
+  ```xml
+  <dependency>
+      <groupId>org.projectlombok</groupId>
+      <artifactId>lombok</artifactId>
+      <version>1.18.24</version>
+      <optional>true</optional>
+  </dependency>
+  ```
+
+- **Spring Boot Starter Validation**: Para validação de dados.
+  ```xml
+  <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-validation</artifactId>
+  </dependency>
+  ```
+
+- **Spring Boot Starter Test**: Para testes unitários e de integração.
+  ```xml
+  <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-test</artifactId>
+      <scope>test</scope>
+  </dependency>
+  ```
+
+#### Instruções para Inicialização Local
+
+Para executar o projeto localmente, siga as etapas abaixo:
 
 1. **Pré-requisitos**:
-   - Java Development Kit (JDK) 11.
-   - Apache Maven 3.6+.
+    - Certifique-se de ter o Java 11 instalado.
+    - Instale o Maven para gerenciar as dependências do projeto.
 
-2. **Clone o Repositório**:
+2. **Clonar o Repositório**:
+    - Clone o repositório do projeto para sua máquina local.
+
    ```bash
-   git clone <URL-DO-REPOSITORIO>
+   git clone https://github.com/ivanmatuck/agendamento-transferencias.git
    cd agendamento-transferencias
    ```
 
-3. **Configurar o Banco de Dados**:
-   - O projeto usa o banco de dados H2, configurado para rodar em memória. 
-   - As configurações específicas do banco de dados podem ser alteradas no arquivo `src/main/resources/application.properties`.
+3. **Configuração do Banco de Dados**:
+    - O projeto está configurado para usar um banco de dados H2 em memória. As configurações estão no arquivo `src/main/resources/application.properties`:
+      ```properties
+      spring.datasource.url=jdbc:h2:mem:agendamentos
+      spring.datasource.driver-class-name=org.h2.Driver
+      spring.datasource.username=sa
+      spring.datasource.password=password
+      spring.h2.console.enabled=true
+      spring.jpa.show-sql=true
+      spring.jpa.hibernate.ddl-auto=update
+      ```
 
-4. **Build do Projeto**:
-   - Navegue até o diretório do projeto e execute o Maven para construir o mesmo:
-   ```bash
-   mvn clean install
-   ```
+4. **Perfil de Desenvolvimento**:
+    - O perfil `dev` está ativo por padrão, conforme especificado em `application.properties`:
+      ```properties
+      spring.profiles.active=dev
+      ```
 
-#### Etapas para Executar Testes Locais
+5. **Executar a Aplicação**:
+    - Navegue até o diretório raiz do projeto onde o arquivo `pom.xml` está localizado.
+    - Execute o seguinte comando Maven para iniciar a aplicação:
+      ```bash
+      mvn spring-boot:run
+      ```
 
-1. **Executar Testes**:
-   - Para rodar os testes, utilize o Maven da seguinte forma:
+6. **Acessar a Aplicação**:
+    - A aplicação estará disponível na porta 8080. Você pode acessar os endpoints REST através de um cliente HTTP ou navegador web, por exemplo:
+      ```
+      http://localhost:8080/api/transferencias
+      ```
+
+7. **Testes**:
+    - Para executar os testes, utilize o seguinte comando Maven:
 
    ```bash
    mvn test
    ```
 
-2. **Verificar Logs de Teste**:
-   - Para analisar resultados, verifique os relatórios de teste que serão gerados no diretório `target/surefire-reports`.
-
-3. **Acesso ao Console H2** (opcional):
-   - O console web do H2 está habilitado por padrão e pode ser acessado via navegador.
-   - Acesse `http://localhost:8080/h2-console` e conecte-se utilizando as credenciais configuradas em `application.properties`.
-
-Ao seguir essas etapas, você deve ser capaz de configure e executar o projeto `agendamento-transferencias` em seu ambiente local, bem como executar testes para verificar sua funcionalidade.
+Essas instruções devem ajudá-lo a configurar e executar o projeto "Agendamento de Transferências" em seu ambiente local. Se você encontrar problemas, verifique os logs de erro para obter mais detalhes sobre o que pode estar errado.
+            

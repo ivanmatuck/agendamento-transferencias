@@ -21,12 +21,20 @@ public class TransferenciaService {
 
     private static final Logger logger = LoggerFactory.getLogger(TransferenciaService.class);
 
+    private final TransferenciaRepository repository;
+
+    /**
+     * Construtor para injeção de dependência.
+     *
+     * @param repository Repositório de transferências.
+     */
     @Autowired
-    private TransferenciaRepository repository;
+    public TransferenciaService(TransferenciaRepository repository) {
+        this.repository = repository;
+    }
 
     /**
      * Agenda uma nova transferência financeira.
-     *
      * Este método valida os dados da transferência, calcula a taxa com base
      * na diferença de dias entre o agendamento e a data de transferência,
      * e salva a transferência no banco de dados.
@@ -61,7 +69,6 @@ public class TransferenciaService {
 
     /**
      * Valida os dados da transferência para garantir que estejam corretos.
-     *
      * Regras de validação:
      * - Conta de origem e destino não podem ser iguais.
      * - O valor da transferência deve ser maior que zero.

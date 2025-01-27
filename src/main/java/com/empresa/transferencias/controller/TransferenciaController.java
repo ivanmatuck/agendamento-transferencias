@@ -1,3 +1,5 @@
+//src/main/java/com/empresa/transferencias/controller/TransferenciaController.java
+
 package com.empresa.transferencias.controller;
 
 import com.empresa.transferencias.model.Transferencia;
@@ -23,8 +25,17 @@ public class TransferenciaController {
 
     private static final Logger logger = LoggerFactory.getLogger(TransferenciaController.class);
 
+    private final TransferenciaService service;
+
+    /**
+     * Construtor para injeção de dependência.
+     *
+     * @param service Instância do TransferenciaService.
+     */
     @Autowired
-    private TransferenciaService service;
+    public TransferenciaController(TransferenciaService service) {
+        this.service = service;
+    }
 
     /**
      * Endpoint para agendar uma nova transferência.
