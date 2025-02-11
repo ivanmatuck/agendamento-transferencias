@@ -1,0 +1,165 @@
+{
+	"info": {
+		"_postman_id": "3a3731ee-dc6a-42e1-b4d7-3dfdd5684005",
+		"name": "Agendamento Transferências API",
+		"description": "Collection para testar os endpoints do sistema de agendamento de transferências financeiras.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "30411021"
+	},
+	"item": [
+		{
+			"name": "Agendar Transferência Local",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"contaOrigem\": \"123456\",\n    \"contaDestino\": \"654321\",\n    \"valorTransferencia\": 1600.75,\n    \"dataTransferencia\": \"2025-02-06\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/transferencias",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"transferencias"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Agendar Transferência AWS",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"contaOrigem\": \"123456\",\n    \"contaDestino\": \"654321\",\n    \"valorTransferencia\": 1800.75,\n    \"dataTransferencia\": \"2025-02-22\"\n}"
+				},
+				"url": {
+					"raw": "http://{{DNS_Publico}}:8080/api/transferencias",
+					"protocol": "http",
+					"host": [
+						"{{DNS_Publico}}"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"transferencias"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Listar Transferências Local",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/transferencias",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"transferencias"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Listar Transferências AWS",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://{{DNS_Publico}}:8080/api/transferencias",
+					"protocol": "http",
+					"host": [
+						"{{DNS_Publico}}"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"transferencias"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Buscar Transferências por Data Local",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/transferencias/data/?data=2025-02-01",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"transferencias",
+						"data",
+						""
+					],
+					"query": [
+						{
+							"key": "data",
+							"value": "2025-02-01"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Buscar Transferências por Data AWS",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://{{DNS_Publico}}:8080/api/transferencias/data/?data=2025-02-22",
+					"protocol": "http",
+					"host": [
+						"{{DNS_Publico}}"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"transferencias",
+						"data",
+						""
+					],
+					"query": [
+						{
+							"key": "data",
+							"value": "2025-02-22"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
