@@ -37,6 +37,12 @@ public class SecretsManagerConfig {
             ObjectMapper objectMapper = new ObjectMapper();
             JsonNode jsonNode = objectMapper.readTree(result.secretString());
 
+            System.out.println("DB_HOST: " + jsonNode.get("host").asText());
+            System.out.println("DB_PORT: " + jsonNode.get("port").asText());
+            System.out.println("DB_NAME: " + jsonNode.get("dbInstanceIdentifier").asText());
+            System.out.println("DB_USER: " + jsonNode.get("username").asText());
+            System.out.println("DB_PASSWORD: " + jsonNode.get("password").asText());
+
             Properties properties = new Properties();
             properties.put("DB_USER", jsonNode.get("username").asText());
             properties.put("DB_PASSWORD", jsonNode.get("password").asText());
