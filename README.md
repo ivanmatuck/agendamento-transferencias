@@ -1,179 +1,202 @@
 
-            # Documentação do Sistema de Agendamento de Transferências Bancárias
+            # Documentação do Projeto: Sistema de Agendamento de Transferências Bancárias
 
-## Visão Geral do Projeto
+## Visão Geral
 
-O Sistema de Agendamento de Transferências Bancárias é uma aplicação desenvolvida em Java, utilizando o framework Spring Boot, com o objetivo de gerenciar transferências financeiras de forma eficiente e segura. Este sistema permite que os usuários agendem transferências entre contas bancárias, especificando a conta de origem, a conta de destino, o valor a ser transferido e a data da transferência. Além disso, o sistema calcula automaticamente a taxa de transferência com base na diferença de dias entre a data de agendamento e a data da transferência.
+O projeto "Sistema de Agendamento de Transferências Bancárias" é uma aplicação desenvolvida em Java utilizando o framework Spring Boot. O objetivo principal é fornecer um sistema robusto e eficiente para o agendamento de transferências financeiras entre contas. Este sistema é projetado para ser escalável e seguro, integrando-se com serviços de gerenciamento de segredos da AWS para proteger informações sensíveis.
 
 ## Objetivo do Projeto
 
-O principal objetivo deste projeto é fornecer uma solução robusta e escalável para o agendamento de transferências bancárias, permitindo que instituições financeiras e seus clientes realizem operações financeiras de forma planejada e com controle sobre as taxas aplicadas. O sistema é projetado para ser integrado a sistemas bancários existentes, oferecendo uma interface RESTful para facilitar a comunicação e a troca de dados.
+O principal objetivo do projeto é facilitar o agendamento de transferências financeiras, permitindo que os usuários programem transferências para datas futuras. O sistema calcula automaticamente as taxas de transferência com base na diferença de dias entre a data de agendamento e a data efetiva da transferência.
 
 ## Benefícios para o Negócio
 
-1. **Automação de Processos**: O sistema automatiza o cálculo de taxas e o agendamento de transferências, reduzindo a necessidade de intervenção manual e minimizando erros.
+1. **Automação de Processos**: O sistema automatiza o processo de agendamento de transferências, reduzindo a necessidade de intervenção manual e minimizando erros.
+   
+2. **Cálculo Automático de Taxas**: Com base na data de agendamento e na data de transferência, o sistema calcula automaticamente a taxa aplicável, garantindo precisão e transparência.
 
-2. **Flexibilidade e Escalabilidade**: Desenvolvido com tecnologias modernas, o sistema é altamente escalável e pode ser facilmente adaptado para atender a diferentes volumes de transações e requisitos de negócios.
+3. **Segurança**: Utiliza o AWS Secrets Manager para gerenciar credenciais de banco de dados de forma segura, protegendo informações sensíveis contra acessos não autorizados.
 
-3. **Segurança**: Utiliza o AWS Secrets Manager para gerenciar credenciais de banco de dados de forma segura, garantindo que informações sensíveis estejam protegidas.
+4. **Escalabilidade**: Construído sobre o Spring Boot, o sistema é altamente escalável, podendo ser facilmente integrado a outras aplicações e serviços.
 
-4. **Integração Simples**: A arquitetura baseada em serviços RESTful permite fácil integração com outros sistemas bancários e financeiros.
-
-5. **Transparência e Controle**: Oferece funcionalidades de auditoria e logging detalhado, permitindo que as instituições financeiras monitorem e auditem todas as operações realizadas.
+5. **Flexibilidade**: Oferece endpoints RESTful que permitem fácil integração com outras plataformas e serviços, facilitando a expansão e adaptação do sistema a diferentes necessidades de negócios.
 
 ## Estrutura do Projeto
 
-### Dependências
+### Configurações e Dependências
 
-O projeto utiliza várias bibliotecas e frameworks para suportar suas funcionalidades:
+- **Spring Boot**: Utilizado como o framework principal para a construção do aplicativo, fornecendo uma estrutura robusta para o desenvolvimento de aplicações Java.
+- **Spring Data JPA**: Facilita a interação com o banco de dados PostgreSQL, permitindo operações CRUD eficientes.
+- **Lombok**: Reduz a verbosidade do código através de anotações que geram automaticamente getters, setters e outros métodos comuns.
+- **AWS SDK**: Integrado para acessar o AWS Secrets Manager, garantindo que as credenciais do banco de dados sejam gerenciadas de forma segura.
 
-- **Spring Boot**: Framework principal para desenvolvimento da aplicação.
-- **Spring Data JPA**: Para interações com o banco de dados PostgreSQL.
-- **Lombok**: Para simplificar a escrita de código Java, reduzindo boilerplate.
-- **AWS SDK**: Para integração com o AWS Secrets Manager.
-- **JUnit e Mockito**: Para testes unitários e de integração.
+### Componentes Principais
 
-### Configurações de Segurança
+- **AgendamentoTransferenciasApplication**: Classe principal que inicializa a aplicação Spring Boot.
+- **AwsSecretsConfig**: Configuração para acessar segredos armazenados no AWS Secrets Manager.
+- **CorsConfig e CorsFilter**: Configurações para permitir requisições CORS, facilitando o desenvolvimento e a integração com front-ends.
+- **TransferenciaController**: Controlador REST que expõe endpoints para agendar e listar transferências.
+- **TransferenciaService**: Serviço que contém a lógica de negócios para validação e agendamento de transferências.
+- **TransferenciaRepository**: Interface de repositório para interagir com o banco de dados.
+- **GlobalExceptionHandler**: Manipulador global de exceções que captura e trata erros de validação e exceções inesperadas.
 
-O sistema utiliza o AWS Secrets Manager para gerenciar credenciais de banco de dados, garantindo que senhas e informações sensíveis não estejam expostas no código fonte. As credenciais são recuperadas dinamicamente em tempo de execução.
+### Segurança e Configuração
 
-### Funcionalidades Principais
-
-- **Agendamento de Transferências**: Permite que os usuários agendem transferências especificando detalhes como contas de origem e destino, valor e data.
-- **Cálculo de Taxas**: Calcula automaticamente a taxa de transferência com base na diferença de dias entre o agendamento e a data da transferência.
-- **Listagem de Transferências**: Oferece endpoints para listar todas as transferências agendadas ou buscar transferências por data específica.
-- **Tratamento de Exceções**: Implementa um manipulador global de exceções para capturar e tratar erros de validação e exceções inesperadas de forma amigável.
-
-### Arquitetura
-
-O projeto segue uma arquitetura baseada em camadas:
-
-- **Camada de Apresentação**: Implementada com controladores REST que expõem endpoints para interação com o sistema.
-- **Camada de Serviço**: Contém a lógica de negócios para validação e processamento de transferências.
-- **Camada de Persistência**: Utiliza Spring Data JPA para interagir com o banco de dados PostgreSQL.
-- **Configurações**: Inclui configurações para CORS, segurança e integração com AWS Secrets Manager.
+- **AWS Secrets Manager**: Utilizado para armazenar e recuperar credenciais do banco de dados de forma segura.
+- **Configurações de Banco de Dados**: Utiliza PostgreSQL como banco de dados, com configurações específicas para ambientes de desenvolvimento e produção.
 
 ### Testes
 
-O projeto inclui testes unitários e de integração para garantir a qualidade e a confiabilidade do código. Os testes verificam a funcionalidade dos controladores, serviços e repositórios, assegurando que o sistema se comporte conforme o esperado em diferentes cenários.
+- **Testes Unitários**: Implementados para garantir a funcionalidade correta dos serviços e controladores, utilizando frameworks de teste como JUnit e Mockito.
 
 ## Conclusão
 
-O Sistema de Agendamento de Transferências Bancárias é uma solução completa para o gerenciamento de transferências financeiras, oferecendo automação, segurança e flexibilidade para instituições financeiras. Com sua arquitetura moderna e integração com serviços de nuvem, o sistema está preparado para atender às necessidades atuais e futuras do mercado financeiro.
+O "Sistema de Agendamento de Transferências Bancárias" é uma solução completa para o gerenciamento de transferências financeiras, oferecendo automação, segurança e flexibilidade. Com sua arquitetura baseada em microserviços e integração com AWS, o sistema está preparado para atender às demandas atuais e futuras do negócio.
             
             ## Arquitetura
             
-            Sistema de Agendamento de Transferências Bancárias - Java
+            Sistema de Agendamento de Transferências - Java
 
 ```
-├── Camada de Aplicação
-│   ├── AgendamentoTransferenciasApplication.java
-│   └── AgendamentoTransferenciasApplicationTests.java
-├── Camada de Configuração
+├── Aplicação Principal
+│   └── AgendamentoTransferenciasApplication.java
+├── Configuração
 │   ├── AwsSecretsConfig.java
 │   ├── CorsConfig.java
 │   ├── CorsFilter.java
 │   └── SecretsManagerConfig.java
-├── Camada de Controle
-│   ├── TransferenciaController.java
-│   └── TransferenciaControllerTest.java
-├── Camada de Exceção
+├── Controlador
+│   └── TransferenciaController.java
+├── Exceção
 │   └── GlobalExceptionHandler.java
-├── Camada de Modelo
+├── Modelo
 │   └── Transferencia.java
-├── Camada de Repositório
+├── Repositório
 │   └── TransferenciaRepository.java
-├── Camada de Serviço
-│   ├── TransferenciaService.java
-│   └── TransferenciaServiceTest.java
-└── Camada de Recursos
-    ├── application-dev.properties
-    └── application.properties
+├── Serviço
+│   └── TransferenciaService.java
+├── Recursos
+│   ├── application-dev.properties
+│   └── application.properties
+└── Testes
+    ├── AgendamentoTransferenciasApplicationTests.java
+    ├── controller
+    │   └── TransferenciaControllerTest.java
+    └── service
+        └── TransferenciaServiceTest.java
 ```
 
-**Descrição das Camadas:**
+### Detalhamento da Arquitetura do Sistema
 
-- **Camada de Aplicação:** Contém a classe principal que inicia a aplicação Spring Boot e os testes de contexto da aplicação.
+- **Aplicação Principal**: 
+  - `AgendamentoTransferenciasApplication.java`: Classe principal que inicia a aplicação Spring Boot.
 
-- **Camada de Configuração:** Define configurações específicas da aplicação, como configurações de CORS, integração com AWS Secrets Manager, e outras propriedades de configuração.
+- **Configuração**: 
+  - `AwsSecretsConfig.java`: Configurações para acessar o AWS Secrets Manager.
+  - `CorsConfig.java`: Configurações de CORS para o ambiente de desenvolvimento.
+  - `CorsFilter.java`: Filtro de CORS para gerenciar requisições HTTP.
+  - `SecretsManagerConfig.java`: Classe para gerenciar o acesso aos segredos armazenados no AWS Secrets Manager.
 
-- **Camada de Controle:** Implementa os controladores REST que expõem os endpoints para operações relacionadas a transferências financeiras. Inclui testes para os controladores.
+- **Controlador**: 
+  - `TransferenciaController.java`: Controlador REST que expõe endpoints para agendar e listar transferências.
 
-- **Camada de Exceção:** Gerencia o tratamento global de exceções, fornecendo respostas adequadas para erros de validação e exceções inesperadas.
+- **Exceção**: 
+  - `GlobalExceptionHandler.java`: Tratamento global de exceções, capturando erros de validação e exceções inesperadas.
 
-- **Camada de Modelo:** Define as entidades de domínio, neste caso, a entidade `Transferencia`, que representa uma transferência financeira.
+- **Modelo**: 
+  - `Transferencia.java`: Entidade que representa uma transferência financeira, com validações de dados.
 
-- **Camada de Repositório:** Fornece interfaces para interagir com o banco de dados, permitindo operações CRUD na entidade `Transferencia`.
+- **Repositório**: 
+  - `TransferenciaRepository.java`: Interface de repositório para interagir com o banco de dados usando Spring Data JPA.
 
-- **Camada de Serviço:** Implementa a lógica de negócios para o agendamento de transferências, incluindo validações e cálculos de taxas. Inclui testes para os serviços.
+- **Serviço**: 
+  - `TransferenciaService.java`: Lógica de negócios para agendamento de transferências, incluindo validações e cálculo de taxas.
 
-- **Camada de Recursos:** Contém arquivos de configuração da aplicação, como propriedades de conexão com o banco de dados e configurações de ambiente.
+- **Recursos**: 
+  - `application-dev.properties`: Configurações específicas para o ambiente de desenvolvimento.
+  - `application.properties`: Configurações gerais da aplicação, incluindo banco de dados e AWS.
+
+- **Testes**: 
+  - `AgendamentoTransferenciasApplicationTests.java`: Testes de contexto da aplicação.
+  - `TransferenciaControllerTest.java`: Testes unitários para o controlador de transferências.
+  - `TransferenciaServiceTest.java`: Testes unitários para o serviço de transferências.
             
             
             ## Endpoints
             
-            ### Detalhamento dos Endpoints do Projeto de Agendamento de Transferências
+            ### Detalhamento dos Endpoints
 
 #### Endpoint: Agendar Transferência
 
-- **Caminho**: `/api/transferencias`
-- **Método HTTP**: `POST`
-- **Entradas**:
-  - Um objeto JSON representando uma transferência, contendo:
-    - `contaOrigem`: String (6 caracteres)
-    - `contaDestino`: String (6 caracteres)
-    - `valorTransferencia`: Decimal (maior que 0)
-    - `dataTransferencia`: Data no futuro (formato ISO-8601)
-- **Processamento Interno e Validações**:
-  1. O controlador `TransferenciaController` recebe a requisição e valida os dados usando anotações de validação.
-  2. O método `agendarTransferencia` do `TransferenciaService` é chamado.
-  3. No serviço, a transferência é validada:
-     - As contas de origem e destino não podem ser iguais.
-     - O valor da transferência deve ser maior que zero.
-  4. A data de agendamento é definida como a data atual.
-  5. A diferença de dias entre a data de agendamento e a data de transferência é calculada.
-  6. A taxa é calculada com base na diferença de dias:
-     - 0 dias: 2.5% do valor + R$3,00
-     - 1-10 dias: R$12,00
-     - 11-20 dias: 8.2% do valor
-     - 21-30 dias: 6.9% do valor
-     - 31-40 dias: 4.7% do valor
-     - 41-50 dias: 1.7% do valor
-     - Mais de 50 dias: não permitido
-  7. A transferência é salva no banco de dados.
-- **Saídas**:
-  - Em caso de sucesso: `ResponseEntity` com status 200 e um JSON contendo a mensagem de sucesso e os dados da transferência agendada.
-  - Em caso de erro de validação: `ResponseEntity` com status 400 e um JSON detalhando o erro.
-  - Em caso de erro interno: `ResponseEntity` com status 500 e uma mensagem de erro genérica.
+- **Método HTTP:** POST
+- **Caminho:** `/api/transferencias`
+
+##### Entradas:
+- **Corpo da Requisição:** Um objeto JSON representando uma transferência, contendo os seguintes campos obrigatórios:
+  - `contaOrigem`: String de exatamente 6 caracteres.
+  - `contaDestino`: String de exatamente 6 caracteres.
+  - `valorTransferencia`: Decimal maior que 0.
+  - `dataTransferencia`: Data no futuro no formato ISO-8601 (yyyy-MM-dd).
+
+##### Processamento Interno e Validações:
+1. **Validação dos Dados:** 
+   - Verifica se `contaOrigem` e `contaDestino` são diferentes.
+   - Verifica se `valorTransferencia` é maior que zero.
+2. **Cálculo da Taxa:** 
+   - Calcula a diferença de dias entre a data atual e `dataTransferencia`.
+   - Aplica regras de cálculo de taxa baseadas na diferença de dias.
+3. **Persistência:** 
+   - Define a `dataAgendamento` como a data atual.
+   - Salva a transferência no banco de dados usando `TransferenciaRepository`.
+
+##### Saídas:
+- **Resposta de Sucesso (200 OK):** 
+  - Corpo: JSON contendo uma mensagem de sucesso e os dados da transferência agendada.
+- **Resposta de Erro de Validação (400 Bad Request):** 
+  - Corpo: JSON com detalhes do erro de validação.
+- **Resposta de Erro Interno (500 Internal Server Error):** 
+  - Corpo: JSON com mensagem de erro genérica.
 
 #### Endpoint: Listar Transferências
 
-- **Caminho**: `/api/transferencias`
-- **Método HTTP**: `GET`
-- **Entradas**: Nenhuma
-- **Processamento Interno e Validações**:
-  1. O controlador `TransferenciaController` recebe a requisição.
-  2. O método `listarTransferencias` do `TransferenciaService` é chamado.
-  3. O serviço busca todas as transferências no repositório.
-- **Saídas**:
-  - Em caso de sucesso: `ResponseEntity` com status 200 e um JSON contendo a quantidade e a lista de transferências.
-  - Em caso de erro interno: `ResponseEntity` com status 500 e uma mensagem de erro genérica.
+- **Método HTTP:** GET
+- **Caminho:** `/api/transferencias`
+
+##### Entradas:
+- **Nenhuma entrada específica.**
+
+##### Processamento Interno e Validações:
+1. **Recuperação de Dados:** 
+   - Busca todas as transferências cadastradas no banco de dados usando `TransferenciaRepository`.
+
+##### Saídas:
+- **Resposta de Sucesso (200 OK):** 
+  - Corpo: JSON contendo a quantidade e a lista de todas as transferências.
+- **Resposta de Erro Interno (500 Internal Server Error):** 
+  - Corpo: JSON com mensagem de erro genérica.
 
 #### Endpoint: Buscar Transferências por Data
 
-- **Caminho**: `/api/transferencias/data`
-- **Método HTTP**: `GET`
-- **Entradas**:
-  - Parâmetro de consulta `data`: String representando a data (formato ISO-8601)
-- **Processamento Interno e Validações**:
-  1. O controlador `TransferenciaController` recebe a requisição.
-  2. A data é convertida de String para `LocalDate`.
-  3. O método `buscarPorDataTransferencia` do `TransferenciaService` é chamado com a data convertida.
-  4. O serviço busca transferências agendadas para a data especificada no repositório.
-- **Saídas**:
-  - Em caso de sucesso: `ResponseEntity` com status 200 e uma lista de transferências agendadas para a data especificada.
-  - Em caso de erro de validação (ex: data inválida): `ResponseEntity` com status 400.
-  - Em caso de erro interno: `ResponseEntity` com status 500 e uma mensagem de erro genérica.
+- **Método HTTP:** GET
+- **Caminho:** `/api/transferencias/data`
+
+##### Entradas:
+- **Parâmetro de Consulta:** 
+  - `data`: String representando a data de transferência no formato ISO-8601 (yyyy-MM-dd).
+
+##### Processamento Interno e Validações:
+1. **Conversão de Data:** 
+   - Converte o parâmetro `data` para um objeto `LocalDate`.
+2. **Recuperação de Dados:** 
+   - Busca transferências agendadas para a data especificada usando `TransferenciaRepository`.
+
+##### Saídas:
+- **Resposta de Sucesso (200 OK):** 
+  - Corpo: JSON contendo a lista de transferências agendadas para a data especificada.
+- **Resposta de Erro de Validação (400 Bad Request):** 
+  - Corpo: JSON com mensagem de erro se a data for inválida.
+- **Resposta de Erro Interno (500 Internal Server Error):** 
+  - Corpo: JSON com mensagem de erro genérica.
             
             ## Models
             
@@ -181,105 +204,106 @@ O Sistema de Agendamento de Transferências Bancárias é uma solução completa
 
 #### Transferencia
 
-A tabela `transferencias` é representada pela classe `Transferencia` e possui a seguinte estrutura:
+A entidade `Transferencia` representa uma transferência financeira e está mapeada para a tabela `transferencias` no banco de dados. A estrutura da tabela e suas colunas são as seguintes:
 
 - **id**: `UUID`
   - Tipo: `UUID`
-  - Anotação: `@Id`, `@GeneratedValue(strategy = GenerationType.AUTO)`
-  - Descrição: Identificador único para cada transferência.
-
-- **contaOrigem**: `String`
+  - Estratégia de geração: `AUTO`
+  - Descrição: Identificador único da transferência.
+  
+- **conta_origem**: `String`
   - Tipo: `VARCHAR(6)`
-  - Anotação: `@NotNull`, `@Size(min = 6, max = 6)`
-  - Descrição: Conta de origem da transferência, deve ter exatamente 6 caracteres.
+  - Restrições: Não nulo, tamanho fixo de 6 caracteres.
+  - Descrição: Conta de origem da transferência.
 
-- **contaDestino**: `String`
+- **conta_destino**: `String`
   - Tipo: `VARCHAR(6)`
-  - Anotação: `@NotNull`, `@Size(min = 6, max = 6)`
-  - Descrição: Conta de destino da transferência, deve ter exatamente 6 caracteres.
+  - Restrições: Não nulo, tamanho fixo de 6 caracteres.
+  - Descrição: Conta de destino da transferência.
 
-- **valorTransferencia**: `BigDecimal`
-  - Tipo: `DECIMAL`
-  - Anotação: `@NotNull`, `@DecimalMin(value = "0.01")`
-  - Descrição: Valor da transferência, deve ser maior que 0.
+- **valor_transferencia**: `BigDecimal`
+  - Tipo: `NUMERIC`
+  - Restrições: Não nulo, valor mínimo de 0.01.
+  - Descrição: Valor da transferência.
 
 - **taxa**: `BigDecimal`
-  - Tipo: `DECIMAL`
-  - Anotação: `@Column(nullable = false)`
+  - Tipo: `NUMERIC`
+  - Restrições: Não nulo.
   - Descrição: Taxa aplicada à transferência.
 
-- **dataTransferencia**: `LocalDate`
+- **data_transferencia**: `LocalDate`
   - Tipo: `DATE`
-  - Anotação: `@NotNull`, `@Future`
-  - Descrição: Data em que a transferência está agendada para ocorrer, deve ser uma data futura.
+  - Restrições: Não nulo, deve ser uma data futura.
+  - Descrição: Data em que a transferência está agendada para ocorrer.
 
-- **dataAgendamento**: `LocalDate`
+- **data_agendamento**: `LocalDate`
   - Tipo: `DATE`
-  - Anotação: `@Column(nullable = false)`
+  - Restrições: Não nulo.
   - Descrição: Data em que a transferência foi agendada.
 
 #### Relacionamentos
 
-Atualmente, a estrutura apresentada não define relacionamentos explícitos com outras tabelas, pois apenas a tabela `transferencias` foi detalhada. Não há menção de chaves estrangeiras ou outras entidades que se relacionem com `Transferencia` no código fornecido.
+Atualmente, a entidade `Transferencia` não possui relacionamentos explícitos com outras tabelas ou entidades no projeto. A tabela `transferencias` é independente e armazena informações sobre cada transferência financeira de forma isolada.
             
             ## Configurações
             
             ### Configurações do Projeto
 
 #### Packages Utilizados
-O projeto está organizado em vários pacotes, cada um com uma responsabilidade específica:
 
-- **com.empresa.transferencias**: Contém a classe principal `AgendamentoTransferenciasApplication` que inicia a aplicação.
-- **com.empresa.transferencias.config**: Inclui classes de configuração, como `AwsSecretsConfig`, `CorsConfig`, `CorsFilter`, e `SecretsManagerConfig`.
-- **com.empresa.transferencias.controller**: Contém o controlador REST `TransferenciaController` responsável por expor endpoints para agendamento e listagem de transferências.
-- **com.empresa.transferencias.exception**: Inclui o `GlobalExceptionHandler` para tratamento global de exceções.
+O projeto está estruturado em diversos pacotes, cada um com responsabilidades específicas:
+
+- **com.empresa.transferencias**: Contém a classe principal `AgendamentoTransferenciasApplication` que inicia o aplicativo Spring Boot.
+- **com.empresa.transferencias.config**: Inclui classes de configuração como `AwsSecretsConfig`, `CorsConfig`, `CorsFilter`, e `SecretsManagerConfig`.
+- **com.empresa.transferencias.controller**: Abriga o controlador REST `TransferenciaController` para gerenciar endpoints de transferências.
+- **com.empresa.transferencias.exception**: Contém a classe `GlobalExceptionHandler` para tratamento global de exceções.
 - **com.empresa.transferencias.model**: Define a entidade `Transferencia` que representa uma transferência financeira.
-- **com.empresa.transferencias.repository**: Contém o repositório `TransferenciaRepository` que interage com o banco de dados.
-- **com.empresa.transferencias.service**: Inclui o serviço `TransferenciaService` que contém a lógica de negócios para agendamento de transferências.
+- **com.empresa.transferencias.repository**: Inclui a interface `TransferenciaRepository` que estende `JpaRepository` para operações de banco de dados.
+- **com.empresa.transferencias.service**: Contém a classe `TransferenciaService` que implementa a lógica de negócios para transferências.
 
 #### Dependências Específicas
-O projeto utiliza as seguintes dependências, conforme definido no arquivo `pom.xml`:
+
+O projeto utiliza o Maven para gerenciamento de dependências. As principais dependências são:
 
 - **Spring Boot**: 
   - `spring-boot-starter-web`: Para construir aplicações web RESTful.
-  - `spring-boot-starter-data-jpa`: Para integração com JPA e bancos de dados.
+  - `spring-boot-starter-data-jpa`: Para integração com JPA e banco de dados.
   - `spring-boot-starter-validation`: Para validação de dados.
-  - `spring-boot-starter-test`: Para suporte a testes.
-  - `spring-boot-configuration-processor`: Para processamento de configurações.
-  
+  - `spring-boot-starter-test`: Para testes unitários e de integração.
+
 - **Banco de Dados**:
-  - `org.postgresql:postgresql:42.7.3`: Driver JDBC para PostgreSQL.
+  - `org.postgresql:postgresql:42.7.3`: Driver para conexão com PostgreSQL.
 
 - **AWS SDK**:
-  - `software.amazon.awssdk:secretsmanager:2.30.17`: Para acessar o AWS Secrets Manager.
-  - `software.amazon.awssdk:sts:2.30.17`: Para suporte a testes.
+  - `software.amazon.awssdk:secretsmanager:2.30.17`: Para integração com AWS Secrets Manager.
+  - `software.amazon.awssdk:sts:2.30.17`: Para integração com AWS Security Token Service (apenas para testes).
 
 - **Lombok**:
-  - `org.projectlombok:lombok:1.18.24`: Para reduzir o código boilerplate.
+  - `org.projectlombok:lombok:1.18.24`: Para reduzir a verbosidade do código com anotações como `@Getter`, `@Setter`, e `@Data`.
 
 #### Instruções para Inicialização Local
-Para executar o projeto localmente, siga os passos abaixo:
+
+Para executar o projeto localmente, siga as instruções abaixo:
 
 1. **Pré-requisitos**:
-   - Certifique-se de ter o Java 11 instalado.
-   - Instale o Maven para gerenciar as dependências do projeto.
-   - Configure o PostgreSQL localmente ou tenha acesso a um banco de dados PostgreSQL.
+   - Certifique-se de ter o JDK 11 instalado.
+   - Instale o Maven para gerenciamento de dependências e construção do projeto.
+   - Configure um banco de dados PostgreSQL acessível.
 
 2. **Configuração do Banco de Dados**:
-   - Atualize as propriedades do banco de dados no arquivo `src/main/resources/application-dev.properties` com as credenciais corretas do seu ambiente de desenvolvimento.
+   - Configure as variáveis de ambiente `DB_HOST`, `DB_PORT`, `DB_NAME`, `DB_USER`, e `DB_PASSWORD` com as credenciais do seu banco de dados PostgreSQL.
+   - Alternativamente, edite o arquivo `src/main/resources/application-dev.properties` com as informações do banco de dados.
 
-3. **Perfil de Desenvolvimento**:
-   - Certifique-se de que o perfil de desenvolvimento está ativo. No arquivo `src/main/resources/application.properties`, descomente a linha `spring.profiles.active=dev` se necessário.
+3. **Configuração do AWS Secrets Manager**:
+   - Configure as variáveis de ambiente `aws.secretsmanager.secretName` e `aws.secretsmanager.region` conforme necessário, ou edite diretamente no arquivo `src/main/resources/application.properties`.
 
-4. **Executar a Aplicação**:
-   - Navegue até o diretório raiz do projeto.
-   - Execute o comando `mvn spring-boot:run` para iniciar a aplicação.
+4. **Executar o Projeto**:
+   - Navegue até o diretório do projeto: `cd C:\Particular\Testes_Vagas_Empregos\Sistema_Transferencias_Bancarias\agendamento-transferencias`.
+   - Execute o comando Maven para iniciar a aplicação: `mvn spring-boot:run`.
+   - A aplicação estará disponível na porta configurada (por padrão, 8080).
 
-5. **Acesso à Aplicação**:
-   - A aplicação estará disponível na porta `8080` por padrão. Acesse `http://localhost:8080` para interagir com os endpoints REST expostos pelo `TransferenciaController`.
+5. **Testes**:
+   - Para executar os testes, utilize o comando: `mvn test`.
 
-6. **Testes**:
-   - Para executar os testes, utilize o comando `mvn test`.
-
-Certifique-se de que todas as dependências estão corretamente configuradas e que o banco de dados está acessível para evitar erros durante a execução.
+Essas configurações devem permitir que você execute e teste o projeto localmente. Certifique-se de ajustar as configurações conforme necessário para o seu ambiente específico.
             
