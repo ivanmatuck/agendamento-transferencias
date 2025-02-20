@@ -5,10 +5,10 @@ import com.empresa.transferencias.repository.TransferenciaRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
@@ -22,20 +22,19 @@ class TransferenciaServiceTest {
 
     @BeforeEach
     void setUp() {
+        MockitoAnnotations.initMocks(this);
         repository = Mockito.mock(TransferenciaRepository.class);
         service = new TransferenciaService(repository);
     }
 
     @Test
     void testAgendarTransferencia() {
-        // Simula a transferência
         Transferencia transferencia = new Transferencia();
         transferencia.setContaOrigem("123456");
         transferencia.setContaDestino("654321");
         transferencia.setValorTransferencia(new BigDecimal("1000.00"));
         transferencia.setDataTransferencia(LocalDate.now().plusDays(5));
 
-        // Mock do comportamento do repositório
         when(repository.save(any(Transferencia.class))).thenAnswer(invocation -> {
             Transferencia t = invocation.getArgument(0);
             t.setId(UUID.randomUUID());
@@ -52,20 +51,17 @@ class TransferenciaServiceTest {
 
     @Test
     void testListarTransferencias() {
-        // Simula dados no repositório
         Transferencia t1 = new Transferencia();
         t1.setId(UUID.randomUUID());
         t1.setContaOrigem("123456");
         t1.setContaDestino("654321");
-        t1.setValorTransferencia(new BigDecimal("1000.00"));
 
         Transferencia t2 = new Transferencia();
         t2.setId(UUID.randomUUID());
         t2.setContaOrigem("987654");
         t2.setContaDestino("456789");
-        t2.setValorTransferencia(new BigDecimal("500.00"));
 
-        when(repository.findAll()).thenReturn(Arrays.asList(t1, t2));
+        when(repository.findAll()).thenReturn(List.of(t1, t2));
 
         List<Transferencia> transferencias = service.listarTransferencias();
 
@@ -75,7 +71,6 @@ class TransferenciaServiceTest {
 
     @Test
     void testBuscarPorDataTransferencia() {
-        // Simula uma data e dados no repositório
         LocalDate data = LocalDate.now().plusDays(5);
         Transferencia transferencia = new Transferencia();
         transferencia.setId(UUID.randomUUID());
@@ -92,4 +87,3 @@ class TransferenciaServiceTest {
         verify(repository, times(1)).findByDataTransferencia(data);
     }
 }
-

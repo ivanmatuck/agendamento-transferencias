@@ -5,6 +5,7 @@ import com.empresa.transferencias.service.TransferenciaService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
 import org.springframework.http.ResponseEntity;
 
 import java.math.BigDecimal;
@@ -22,6 +23,7 @@ class TransferenciaControllerTest {
 
     @BeforeEach
     void setUp() {
+        MockitoAnnotations.initMocks(this);
         service = Mockito.mock(TransferenciaService.class);
         controller = new TransferenciaController(service);
     }

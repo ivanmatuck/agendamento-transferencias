@@ -1,5 +1,3 @@
-//src/main/java/com/empresa/transferencias/controller/TransferenciaController.java
-
 package com.empresa.transferencias.controller;
 
 import com.empresa.transferencias.model.Transferencia;
@@ -24,7 +22,6 @@ import java.util.Map;
 public class TransferenciaController {
 
     private static final Logger logger = LoggerFactory.getLogger(TransferenciaController.class);
-
     private final TransferenciaService service;
 
     /**
@@ -41,9 +38,6 @@ public class TransferenciaController {
      * Endpoint para agendar uma nova transferência.
      *
      * @param transferencia Dados válidos da transferência a ser agendada.
-     *                      Deve incluir conta de origem, conta de destino,
-     *                      valor da transferência e data de transferência.
-     *                      Todas as entradas serão validadas.
      * @return ResponseEntity contendo uma mensagem de sucesso e os dados da
      *         transferência agendada, ou erros detalhados em caso de falha.
      */
@@ -58,14 +52,19 @@ public class TransferenciaController {
                     "dados", transferenciaAgendada
             ));
         } catch (IllegalArgumentException e) {
-            logger.error("Erro de validação ao agendar transferência: {}", e.getMessage());
+            logger.error("Erro de validação ao agendar transferência: {}", e.getMessage(), e);
             return ResponseEntity.badRequest().body(Map.of(
-                    "erro", e.getMessage()
+                    "erro", "Erro de validação: " + e.getMessage()
             ));
         } catch (RuntimeException e) {
             logger.error("Erro interno ao agendar transferência: {}", e.getMessage(), e);
             return ResponseEntity.status(500).body(Map.of(
-                    "erro", "Erro interno. Consulte os logs para mais detalhes."
+                    "erro", "Erro inesperado: " + e.getMessage()
+            ));
+        } catch (Exception e) {
+            logger.error("Erro não esperado ao agendar transferência: {}", e.getMessage(), e);
+            return ResponseEntity.status(500).body(Map.of(
+                    "erro", "Erro crítico: " + e.getMessage()
             ));
         }
     }
@@ -87,10 +86,15 @@ public class TransferenciaController {
                     "quantidade", transferencias.size(),
                     "transferencias", transferencias
             ));
-        } catch (Exception e) {
-            logger.error("Erro ao listar transferências: {}", e.getMessage(), e);
+        } catch (RuntimeException e) {
+            logger.error("Erro interno ao listar transferências: {}", e.getMessage(), e);
             return ResponseEntity.internalServerError().body(Map.of(
-                    "erro", "Erro interno ao listar transferências. Consulte os logs para mais detalhes."
+                    "erro", "Erro interno ao listar transferências: " + e.getMessage()
+            ));
+        } catch (Exception e) {
+            logger.error("Erro inesperado ao listar transferências: {}", e.getMessage(), e);
+            return ResponseEntity.internalServerError().body(Map.of(
+                    "erro", "Erro crítico ao listar transferências: " + e.getMessage()
             ));
         }
     }
@@ -98,24 +102,37 @@ public class TransferenciaController {
     /**
      * Endpoint para buscar transferências agendadas em uma data específica.
      *
-     * @param dataTransferencia Data de transferência no formato ISO-8601
-     *                          (yyyy-MM-dd). Deve ser uma data válida.
+     * @param dataTransferencia Data de transferência no formato ISO-8601 (yyyy-MM-dd).
      * @return ResponseEntity contendo a lista de transferências agendadas
      *         para a data especificada, ou erros em caso de entrada inválida
      *         ou falha interna.
      */
     @GetMapping("/data")
-    public ResponseEntity<List<Transferencia>> buscarPorData(@RequestParam("data") String dataTransferencia) {
+    public ResponseEntity<?> buscarPorData(@RequestParam("data") String dataTransferencia) {
         try {
             logger.info("Requisição para buscar transferências pela data: {}", dataTransferencia);
             LocalDate data = LocalDate.parse(dataTransferencia);
             List<Transferencia> transferencias = service.buscarPorDataTransferencia(data);
             logger.info("Transferências encontradas para a data {}: {}", dataTransferencia, transferencias.size());
-            return ResponseEntity.ok(transferencias);
+            return ResponseEntity.ok(Map.of(
+                    "quantidade", transferencias.size(),
+                    "transferencias", transferencias
+            ));
+        } catch (IllegalArgumentException e) {
+            logger.error("Erro de formatação de data: {}", e.getMessage(), e);
+            return ResponseEntity.badRequest().body(Map.of(
+                    "erro", "Formato de data inválido: " + e.getMessage()
+            ));
+        } catch (RuntimeException e) {
+            logger.error("Erro interno ao buscar transferências: {}", e.getMessage(), e);
+            return ResponseEntity.internalServerError().body(Map.of(
+                    "erro", "Erro interno ao buscar transferências: " + e.getMessage()
+            ));
         } catch (Exception e) {
-            logger.error("Erro ao buscar transferências pela data: {}", e.getMessage(), e);
-            return ResponseEntity.badRequest().body(null);
+            logger.error("Erro inesperado ao buscar transferências: {}", e.getMessage(), e);
+            return ResponseEntity.internalServerError().body(Map.of(
+                    "erro", "Erro crítico ao buscar transferências: " + e.getMessage()
+            ));
         }
     }
-
 }
