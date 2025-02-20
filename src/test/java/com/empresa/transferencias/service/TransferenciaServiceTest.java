@@ -92,3 +92,4 @@ class TransferenciaServiceTest {
         verify(repository, times(1)).findByDataTransferencia(data);
     }
 }
+
